@@ -17,8 +17,8 @@ TODO:
 toy_labels, toy_data = p1.read_toy_data('toy_data.tsv')
 
 # Train classifiers
-T =   # Choose values
-l = 
+T = 5  # Choose values
+l = 10
 theta, theta_0 = p1.perceptron(toy_data, toy_labels, T)
 p1.plot_2d_examples(toy_data, toy_labels, theta_0, theta, 'Perceptron')
 theta, theta_0 = p1.avg_perceptron(toy_data, toy_labels, T)

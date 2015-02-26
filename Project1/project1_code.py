@@ -118,23 +118,55 @@ def extract_feature_vectors(texts, dictionary):
     
     return feature_matrix
 
+
+def sgn(i):
+    if (i <= 0):
+        return -1
+    else:
+        return 1
+
+def eta(x,y,theta,l):
+    return min(1/l,loss(x,y,theta)/np.dot(x,x))
+
+def loss(x,y,theta):
+    return max(0,1-np.dot(y*theta,x))
+
+def avg(theta,tc):
+    return np.mean(theta[0:tc], axis=0)
+
+def sgntest(theta,theta_0,x,y):
+    trans = np.transpose(theta)
+    dot = np.dot(trans,x)
+    return sgn(dot+theta_0) != y
+
+def baseperceptron(feature_matrix, labels, T, eta,l):
+    x = feature_matrix
+    y = labels
+    M,height = feature_matrix.shape
+    theta = np.empty([T*M,height])
+    theta_0 = np.empty([T*M,1])
+    theta[0] = 0
+    theta_0[0] = 0 
+    tc = 0
+    for h in range (T):
+        for i in range (M):
+            if (sgntest(theta[tc],theta_0[tc],x[i],y[i])):
+                theta[tc+1] = theta[tc] + eta(x[i],y[i],theta[tc],l)*np.dot(y[i],x[i])
+                theta_0[tc+1] = theta_0[tc] + y[i]
+                tc = tc + 1
+    return (theta,theta_0,tc)
+
 def perceptron(feature_matrix, labels, T):
-    """
-      TODO: IMPLEMENT PERCEPTRON
-    """
-    return []
+    theta, theta_0, tc = baseperceptron(feature_matrix, labels, T,lambda x,y,theta,l:1, 0)
+    return (theta[tc],theta_0[tc])
 
 def avg_perceptron(feature_matrix, labels, T):
-    """
-      TODO: IMPLEMENT AVERAGE PERCEPTRON
-    """
-    return []
+    theta, theta_0, tc = baseperceptron(feature_matrix, labels, T,lambda x,y,theta,l:1, 0)
+    return (avg(theta,tc),theta_0[tc])
 
 def avg_passive_aggressive(feature_matrix, labels, T, l):
-    """
-        TODO: IMPLEMENT AVERAGE PASSIVE-AGGRESSIVE
-    """
-    return []
+    theta, theta_0, tc = baseperceptron(feature_matrix, labels, T,eta, l)
+    return (avg(theta,tc),theta_0[tc])
 
 def classify(feature_matrix, theta_0, theta_vector):
     """
