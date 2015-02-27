@@ -153,7 +153,7 @@ def baseperceptron(feature_matrix, labels, T, eta,l):
                 break
             if (sgnresult(theta[tc],theta_0[tc],x[i])!= y[i] or l != 0):
                 theta[tc+1] = theta[tc] + eta(x[i],y[i],theta[tc],l)*np.dot(y[i],x[i])
-                theta_0[tc+1] = theta_0[tc] + y[i]
+                theta_0[tc+1] = theta_0[tc] + eta(x[i],y[i],theta[tc],l)*y[i]
                 tc = tc + 1
     return (theta,theta_0,tc)
 
