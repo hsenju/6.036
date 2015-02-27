@@ -118,7 +118,6 @@ def extract_feature_vectors(texts, dictionary):
     
     return feature_matrix
 
-
 def sgn(i):
     if (i <= 0):
         return -1
@@ -126,18 +125,18 @@ def sgn(i):
         return 1
 
 def eta(x,y,theta,l):
-    return min(1/l,loss(x,y,theta)/np.dot(x,x))
+    return min(1.0/l,loss(x,y,theta)/np.dot(x,x))
 
 def loss(x,y,theta):
-    return max(0,1-np.dot(y*theta,x))
+    return max (0,1-np.dot(y*theta,x))
 
 def avg(theta,tc):
     return np.mean(theta[0:tc], axis=0)
 
-def sgntest(theta,theta_0,x,y):
+def sgnresult(theta,theta_0,x):
     trans = np.transpose(theta)
     dot = np.dot(trans,x)
-    return sgn(dot+theta_0) != y
+    return sgn(dot+theta_0) 
 
 def baseperceptron(feature_matrix, labels, T, eta,l):
     x = feature_matrix
@@ -150,7 +149,9 @@ def baseperceptron(feature_matrix, labels, T, eta,l):
     tc = 0
     for h in range (T):
         for i in range (M):
-            if (sgntest(theta[tc],theta_0[tc],x[i],y[i])):
+            if (tc == T*M-1):
+                break
+            if (sgnresult(theta[tc],theta_0[tc],x[i])!= y[i] or l != 0):
                 theta[tc+1] = theta[tc] + eta(x[i],y[i],theta[tc],l)*np.dot(y[i],x[i])
                 theta_0[tc+1] = theta_0[tc] + y[i]
                 tc = tc + 1
@@ -169,14 +170,11 @@ def avg_passive_aggressive(feature_matrix, labels, T, l):
     return (avg(theta,tc),theta_0[tc])
 
 def classify(feature_matrix, theta_0, theta_vector):
-    """
-      TODO: IMPLEMENT FUNCTION
-      Classifies a set of data points given a weight vector and offset.
-      Inputs are an (m, n) matrix of input vectors (m data points and n features),
-      a real number offset, and a length n parameter vector.
-      Returns a length m label vector.
-    """
-    return []
+    labels = []
+    M,height = feature_matrix.shape
+    for i in range (M):
+        labels.append(sgnresult(theta_vector,theta_0,feature_matrix[i]))
+    return labels
 
 def score_accuracy(predictions, true_labels):
     """

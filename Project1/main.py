@@ -30,7 +30,7 @@ p1.plot_2d_examples(toy_data, toy_labels, theta_0, theta, 'Passive-Agressive')
 
 ##########################################################################
 ######################## PART 2 : ESSAY DATA #############################
-#########################################################################
+########################################################################
 
 
 ########## READ DATA ##########
@@ -59,8 +59,8 @@ TODO:
       avg_passive_aggressive(features,labels, T, l)
 """
 
-T =  # maximum number of iterations through all data
-l =  # lambda (used for passive-aggressive)
+T =  5# maximum number of iterations through all data
+l =  1# lambda (used for passive-aggressive)
 
 theta, theta_0 = p1.perceptron(train_feature_matrix, train_labels, T)
 theta, theta_0 = p1.avg_perceptron(train_feature_matrix, train_labels, T)
@@ -77,21 +77,22 @@ TODO:
 
 """
 
-
-
 # ToDo: Choose optimal based on performance on validation set
-T_optimal = 
-lambda_optimal = 
-
+T_optimal = 5
+lambda_optimal = 1
 
 ########## TESTING ##########
-optimal_theta, optimal_theta_0 = p1.avg_passive_aggressive(train_feature_matrix, train_labels, T_optimal, lambda_optimal)
-predictions = p1.classify(test_feature_matrix, optimal_theta_0, optimal_theta)
+optimal_theta_p, optimal_theta_0_p = p1.perceptron(train_feature_matrix, train_labels, T_optimal)
+optimal_theta_ap, optimal_theta_0_ap = p1.avg_perceptron(train_feature_matrix, train_labels, T_optimal)
+optimal_theta_apa, optimal_theta_0_apa = p1.avg_passive_aggressive(train_feature_matrix, train_labels, T_optimal, lambda_optimal)
+predictions_p = p1.classify(test_feature_matrix, optimal_theta_0_p, optimal_theta_p)
+predictions_ap = p1.classify(test_feature_matrix, optimal_theta_0_ap, optimal_theta_ap)
+predictions_apa = p1.classify(test_feature_matrix, optimal_theta_0_apa, optimal_theta_apa)
 
 print 'Performance on Test Set:'
-test_score = p1.score_accuracy(predictions, test_labels)
-
-
+test_score1 = p1.score_accuracy(predictions_p, test_labels)
+test_score2 = p1.score_accuracy(predictions_ap, test_labels)
+test_score3 = p1.score_accuracy(predictions_apa, test_labels)
 
 """
 TODO:
