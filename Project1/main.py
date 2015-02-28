@@ -16,15 +16,15 @@ TODO:
 # Read data
 toy_labels, toy_data = p1.read_toy_data('toy_data.tsv')
 
-# Train classifiers
+# # Train classifiers
 T = 5  # Choose values
 l = 10
-theta, theta_0 = p1.perceptron(toy_data, toy_labels, T)
-p1.plot_2d_examples(toy_data, toy_labels, theta_0, theta, 'Perceptron')
-theta, theta_0 = p1.avg_perceptron(toy_data, toy_labels, T)
-p1.plot_2d_examples(toy_data, toy_labels, theta_0, theta, 'Averaged Perceptron')
-theta, theta_0 = p1.avg_passive_aggressive(toy_data, toy_labels, T, l)
-p1.plot_2d_examples(toy_data, toy_labels, theta_0, theta, 'Passive-Agressive')
+# theta, theta_0 = p1.perceptron(toy_data, toy_labels, T)
+# p1.plot_2d_examples(toy_data, toy_labels, theta_0, theta, 'Perceptron')
+# theta, theta_0 = p1.avg_perceptron(toy_data, toy_labels, T)
+# p1.plot_2d_examples(toy_data, toy_labels, theta_0, theta, 'Averaged Perceptron')
+# theta, theta_0 = p1.avg_passive_aggressive(toy_data, toy_labels, T, l)
+# p1.plot_2d_examples(toy_data, toy_labels, theta_0, theta, 'Passive-Aggressive')
 
 
 
@@ -59,12 +59,12 @@ TODO:
       avg_passive_aggressive(features,labels, T, l)
 """
 
-T =  5# maximum number of iterations through all data
+T =  20# maximum number of iterations through all data
 l =  1# lambda (used for passive-aggressive)
 
-theta, theta_0 = p1.perceptron(train_feature_matrix, train_labels, T)
-theta, theta_0 = p1.avg_perceptron(train_feature_matrix, train_labels, T)
-theta, theta_0 = p1.avg_passive_aggressive(train_feature_matrix, train_labels, T, l)
+# theta, theta_0 = p1.perceptron(train_feature_matrix, train_labels, T)
+# theta, theta_0 = p1.avg_perceptron(train_feature_matrix, train_labels, T)
+# theta, theta_0 = p1.avg_passive_aggressive(train_feature_matrix, train_labels, T, l)
 
 
 ########## VALIDATION ##########
@@ -78,20 +78,53 @@ TODO:
 """
 
 # ToDo: Choose optimal based on performance on validation set
-T_optimal = 5
-lambda_optimal = 1
+# T_array = [1, 5, 10, 15, 20]
+# lambda_array = [1, 10, 20, 50, 100]
+# T_train_scores = []
+# T_validations = []
+# l_train_scores = []
+# l_validations = []
+
+# for T_optimal in T_array:
+# 	optimal_theta_apa, optimal_theta_0_apa = p1.avg_passive_aggressive(train_feature_matrix, train_labels, T_optimal, l)
+	
+# 	test_predictions_apa = p1.classify(test_feature_matrix, optimal_theta_0_apa, optimal_theta_apa)
+# 	test_score = p1.score_accuracy(test_predictions_apa, test_labels)
+# 	T_train_scores.append(test_score)
+	
+# 	validations_predictions_apa = p1.classify(val_feature_matrix, optimal_theta_0_apa, optimal_theta_apa)
+# 	validations_score = p1.score_accuracy(validations_predictions_apa, val_labels)
+# 	T_validations.append(validations_score)
+
+# for lambda_optimal in lambda_array:
+# 	optimal_theta_apa, optimal_theta_0_apa = p1.avg_passive_aggressive(train_feature_matrix, train_labels, T, lambda_optimal)
+	
+# 	test_predictions_apa = p1.classify(test_feature_matrix, optimal_theta_0_apa, optimal_theta_apa)
+# 	test_score = p1.score_accuracy(test_predictions_apa, test_labels)
+# 	l_train_scores.append(test_score)
+
+# 	validations_predictions_apa = p1.classify(val_feature_matrix, optimal_theta_0_apa, optimal_theta_apa)
+# 	validations_score = p1.score_accuracy(validations_predictions_apa, val_labels)
+# 	l_validations.append(validations_score)
+
+# p1.plot_scores('Iterations',T_array,T_train_scores,T_validations,'Iterations')
+
+# p1.plot_scores('Lambda',lambda_array,l_train_scores,l_validations,'Lambda')
 
 ########## TESTING ##########
-optimal_theta_p, optimal_theta_0_p = p1.perceptron(train_feature_matrix, train_labels, T_optimal)
-optimal_theta_ap, optimal_theta_0_ap = p1.avg_perceptron(train_feature_matrix, train_labels, T_optimal)
+T_optimal =  20
+lambda_optimal = 1
+
+#optimal_theta_p, optimal_theta_0_p = p1.perceptron(train_feature_matrix, train_labels, T_optimal)
+#optimal_theta_ap, optimal_theta_0_ap = p1.avg_perceptron(train_feature_matrix, train_labels, T_optimal)
 optimal_theta_apa, optimal_theta_0_apa = p1.avg_passive_aggressive(train_feature_matrix, train_labels, T_optimal, lambda_optimal)
-predictions_p = p1.classify(test_feature_matrix, optimal_theta_0_p, optimal_theta_p)
-predictions_ap = p1.classify(test_feature_matrix, optimal_theta_0_ap, optimal_theta_ap)
+#predictions_p = p1.classify(test_feature_matrix, optimal_theta_0_p, optimal_theta_p)
+#predictions_ap = p1.classify(test_feature_matrix, optimal_theta_0_ap, optimal_theta_ap)
 predictions_apa = p1.classify(test_feature_matrix, optimal_theta_0_apa, optimal_theta_apa)
 
 print 'Performance on Test Set:'
-test_score1 = p1.score_accuracy(predictions_p, test_labels)
-test_score2 = p1.score_accuracy(predictions_ap, test_labels)
+#test_score1 = p1.score_accuracy(predictions_p, test_labels)
+#test_score2 = p1.score_accuracy(predictions_ap, test_labels)
 test_score3 = p1.score_accuracy(predictions_apa, test_labels)
 
 """
