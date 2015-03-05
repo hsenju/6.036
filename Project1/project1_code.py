@@ -112,7 +112,7 @@ def extract_feature_vectors(texts, dictionary):
 
     num_of_new_features = 15 # Number of features other than bag of words
     num_texts = len(texts)
-    feature_matrix = np.zeros([num_texts, len(dictionary) + len (SAT_words) + num_of_new_features])
+    feature_matrix = np.zeros([num_texts, len(dictionary) + num_of_new_features])
         
     for i, text in enumerate(texts):
         #### Unigrams and bigrams
@@ -157,25 +157,25 @@ def extract_feature_vectors(texts, dictionary):
         
         #### Additional Features
         # Binary features for text length
-        feature_matrix[i, len(dictionary) + len (SAT_words) + 0] = (num_words < text_length_quantiles[0]) # Bottom 25% 
-        feature_matrix[i, len(dictionary) + len (SAT_words) + 1] = (num_words < text_length_quantiles[1]) # Bottom 50% 
-        feature_matrix[i, len(dictionary) + len (SAT_words) + 2] = (num_words < text_length_quantiles[2]) # Bottom 75%
-        lengths = [len(w) for w in word_list]
-        feature_matrix[i, len(dictionary) + len (SAT_words) + 3] = sum(lengths)/float(len(lengths)) # Average word length
-        feature_matrix[i, len(dictionary) + len (SAT_words) + 4] = len(set(word_list)) # Unique words
+        feature_matrix[i, len(dictionary) + 0] = (num_words < text_length_quantiles[0]) # Bottom 25% 
+        feature_matrix[i, len(dictionary) + 1] = (num_words < text_length_quantiles[1]) # Bottom 50% 
+        feature_matrix[i, len(dictionary) + 2] = (num_words < text_length_quantiles[2]) # Bottom 75%
+        # lengths = [len(w) for w in word_list]
+        # feature_matrix[i, len(dictionary) + 3] = sum(lengths)/float(len(lengths)) # Average word length
+        # feature_matrix[i, len(dictionary) + 4] = len(set(word_list)) # Unique words
 
         # feature_matrix[i, len(dictionary) + len (SAT_words) + 5] = (first_word_quintile >= second_word_quintile and first_word_quintile >= third_word_quintile and first_word_quintile >= fourth_word_quintile)  
         # feature_matrix[i, len(dictionary) + len (SAT_words) + 6] = (second_word_quintile >= first_word_quintile and second_word_quintile >= third_word_quintile and second_word_quintile >= fourth_word_quintile) 
         # feature_matrix[i, len(dictionary) + len (SAT_words) + 7] = (third_word_quintile >= second_word_quintile and third_word_quintile >= first_word_quintile and third_word_quintile >= fourth_word_quintile) 
         # feature_matrix[i, len(dictionary) + len (SAT_words) + 8] = (fourth_word_quintile >= second_word_quintile and fourth_word_quintile >= third_word_quintile and fourth_word_quintile >= first_word_quintile) 
 
-        feature_matrix[i, len(dictionary) + len (SAT_words) + 9] = (stop_words < stop_word_quantiles[0])
-        feature_matrix[i, len(dictionary) + len (SAT_words) + 10] = (stop_words < stop_word_quantiles[1])
-        feature_matrix[i, len(dictionary) + len (SAT_words) + 11] = (stop_words < stop_word_quantiles[2])
+        # feature_matrix[i, len(dictionary) + 9] = (stop_words < stop_word_quantiles[0])
+        # feature_matrix[i, len(dictionary) + 10] = (stop_words < stop_word_quantiles[1])
+        # feature_matrix[i, len(dictionary) + 11] = (stop_words < stop_word_quantiles[2])
 
-        feature_matrix[i, len(dictionary) + len (SAT_words) + 12] = (mispellings < mispelled_words_quantiles[0])
-        feature_matrix[i, len(dictionary) + len (SAT_words) + 13] = (mispellings < mispelled_words_quantiles[1])
-        feature_matrix[i, len(dictionary) + len (SAT_words) + 14] = (mispellings < mispelled_words_quantiles[2])        
+        feature_matrix[i, len(dictionary) + 12] = (mispellings < mispelled_words_quantiles[0])
+        feature_matrix[i, len(dictionary) + 13] = (mispellings < mispelled_words_quantiles[1])
+        feature_matrix[i, len(dictionary) + 14] = (mispellings < mispelled_words_quantiles[2])        
 
         """
         TODO: try more features

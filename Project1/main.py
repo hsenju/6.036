@@ -41,8 +41,8 @@ dictionary = p1.extract_dictionary(train_text)
 train_feature_matrix = p1.extract_feature_vectors(train_text, dictionary)
 
 #Validation data
-val_labels, val_text = p1.read_data('validation.tsv')
-val_feature_matrix = p1.extract_feature_vectors(val_text, dictionary)
+# val_labels, val_text = p1.read_data('validation.tsv')
+# val_feature_matrix = p1.extract_feature_vectors(val_text, dictionary)
 
 #Test data
 test_labels, test_text = p1.read_data('test.tsv')
