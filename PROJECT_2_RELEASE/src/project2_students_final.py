@@ -1,4 +1,5 @@
 import csv
+import sys
 import numpy as np
 import os
 from os import listdir
@@ -433,11 +434,59 @@ def ml_reconstruct(U, E, mean):
 # plot_pca(data, X_recon)
 
 def ml_k_means(X, K, init):
-    pass
-    # YOUR CODE HERE
-        
+    n, d = X.shape
+    centroids = np.empty([K,d])
+    centroids[:] = init
+    clusterAssignments = np.empty([n,1])
+    for i in range (50):
+        for j in range (n):
+            mindist = sys.maxint
+            cluster = 0
+            for k in range (K):
+                dist = np.linalg.norm(X[j]-init[k])
+                if (dist<mindist):
+                    mindist = dist
+                    cluster = k
+            clusterAssignments[j] = cluster
+        for k in range (K):
+            summation = np.empty([n,d])
+            for j in range (n):
+                if (clusterAssignments[j] == k):
+                    summation[j] = X[j]
+            centroids[k] = summation.mean(0);
+    return (centroids, clusterAssignments)
 
-def ml_k_medoids(X, K, init):    
-    pass
-    # YOUR CODE HERE
+def ml_k_medoids(X, K, init):
+    n, d = X.shape
+    centroids = np.empty([K,d])
+    centroids[:] = init
+    clusterAssignments = np.empty([n,1])
+    for i in range (50):
+        for j in range (n):
+            mindist = sys.maxint
+            cluster = 0
+            for k in range (K):
+                dist = np.linalg.norm(X[j]-init[k])
+                if (dist<mindist):
+                    mindist = dist
+                    cluster = k
+            clusterAssignments[j] = cluster
+        for k in range (K):
+            mindist = sys.maxint
+            for j in range (n):
+                if (clusterAssignments[j] == k):
+                    distsum = 0
+                    for i in range (n):
+                        if (clusterAssignments[i] == k):
+                            distsum = distsum + np.linalg.norm(X[j]-X[i])
+                    if (distsum<mindist):
+                        centroids[k] = X[j]
+                        mindist = distsum
+    return (centroids, clusterAssignments)
+
+X = loadCSV('toy_cluster_data.csv')
+k = [2, 3, 4]
+for i in range (4):
+    cluster_centers, clusterAssignments = ml_k_medoids(X, k[i],X[0:k[i]:1])
+    plot_2D_clusters(X, clusterAssignments, cluster_centers);
     
