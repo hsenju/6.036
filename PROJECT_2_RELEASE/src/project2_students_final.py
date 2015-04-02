@@ -47,7 +47,6 @@ def loadPixelFeatures():
         X.append(img)
     return np.array(X)
 
-
 def ml_compute_eigenvectors_SVD(X,m):
     left, s, right = np.linalg.svd(np.matrix(X))    
     U = np.matrix.getA(right)    
@@ -161,7 +160,6 @@ def plotArtworks():
             plt.imshow(mpimg.imread(os.path.join(artist_dir, image_files[i])))
         figure_count += 1
     plt.show()
-
 
 # creates a dictionary mapping cluster label to indices of X that belong to that cluster
 def create_cluster_dict(cluster_labels):
@@ -460,7 +458,7 @@ def ml_k_medoids(X, K, init):
     n, d = X.shape
     centroids = np.empty([K,d])
     centroids[:] = init
-    clusterAssignments = np.empty([n,1])
+    clusterAssignments = np.empty([n])
     for i in range (50):
         for j in range (n):
             mindist = sys.maxint
@@ -484,9 +482,47 @@ def ml_k_medoids(X, K, init):
                         mindist = distsum
     return (centroids, clusterAssignments)
 
-X = loadCSV('toy_cluster_data.csv')
-k = [2, 3, 4]
-for i in range (4):
-    cluster_centers, clusterAssignments = ml_k_medoids(X, k[i],X[0:k[i]:1])
-    plot_2D_clusters(X, clusterAssignments, cluster_centers);
+K = [2, 5, 10]
+
+#X = loadCSV('gist_features.csv')
+X = loadCSV('deep_features.csv')
+
+for j in range (len(K)):
+    print "CNN"
+    print "K = " + str(K[j])
+    U = ml_compute_eigenvectors_SVD(np.dot(np.transpose(X),X),200)
+    E = ml_pca(X, U)
+    medoids = init_medoids_plus(X, K[j])
+    cluster_centers, clusterAssignments = ml_k_medoids(X, K[j] ,medoids)
+    index = computeDunnIndex(cluster_centers, clusterAssignments, X)
+    print "Dunn index = " + str(index)
+    purity = computeClusterPurity(clusterAssignments)
+    print "purity " + str(purity)
+
+# M = [10, 50, 400]
+# K = [2, 5, 10]
+
+# X = loadPixelFeatures();
+# for i in range (len(M)):
+#     for j in range (len(K)):
+#         print "M = " + str(M[i])
+#         print "K = " + str(K[j])
+#         U = ml_compute_eigenvectors_SVD(np.dot(np.transpose(X),X),M[i])
+#         E = ml_pca(X, U)
+#         medoids = init_medoids_plus(X, K[j])
+#         cluster_centers, clusterAssignments = ml_k_medoids(X, K[j] ,medoids)
+#         #plot_2D_clusters(X, clusterAssignments, cluster_centers);
+#         index = computeDunnIndex(cluster_centers, clusterAssignments, X)
+#         print "Dunn index = " + str(index)
+#         purity = computeClusterPurity(clusterAssignments)
+#         print "purity " + str(purity)
+
+# X_recon = np.dot(E, U)
+# plotGallery(X_recon)
+
+# X = loadCSV('toy_cluster_data.csv')
+# k = [2, 3, 4]
+# for i in range (4):
+#     cluster_centers, clusterAssignments = ml_k_medoids(X, k[i],X[0:k[i]:1])
+#     plot_2D_clusters(X, clusterAssignments, cluster_centers);
     
