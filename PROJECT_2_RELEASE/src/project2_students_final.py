@@ -435,7 +435,7 @@ def ml_k_means(X, K, init):
     n, d = X.shape
     centroids = np.empty([K,d])
     centroids[:] = init
-    clusterAssignments = np.empty([n,1])
+    clusterAssignments = np.empty([n])
     for i in range (50):
         for j in range (n):
             mindist = sys.maxint
@@ -458,7 +458,7 @@ def ml_k_medoids(X, K, init):
     n, d = X.shape
     centroids = np.empty([K,d])
     centroids[:] = init
-    clusterAssignments = np.empty([n])
+    clusterAssignments = np.empty([n,1])
     for i in range (50):
         for j in range (n):
             mindist = sys.maxint
@@ -482,22 +482,28 @@ def ml_k_medoids(X, K, init):
                         mindist = distsum
     return (centroids, clusterAssignments)
 
-K = [2, 5, 10]
+K = [10, 30, 50, 70]
+labeled = [5, 15, 25, 50, 75, 100]
 
 #X = loadCSV('gist_features.csv')
 X = loadCSV('deep_features.csv')
 
 for j in range (len(K)):
-    print "CNN"
-    print "K = " + str(K[j])
-    U = ml_compute_eigenvectors_SVD(np.dot(np.transpose(X),X),200)
-    E = ml_pca(X, U)
-    medoids = init_medoids_plus(X, K[j])
-    cluster_centers, clusterAssignments = ml_k_medoids(X, K[j] ,medoids)
-    index = computeDunnIndex(cluster_centers, clusterAssignments, X)
-    print "Dunn index = " + str(index)
-    purity = computeClusterPurity(clusterAssignments)
-    print "purity " + str(purity)
+    for k in range (len(labeled)):
+        for i in range (3):
+            print "K = "+str(K[j])
+            print "labeled = "+str(labeled[k])
+            U = ml_compute_eigenvectors_SVD(np.dot(np.transpose(X),X),200)
+            E = ml_pca(X, U)
+            medoids = init_medoids_plus(X, K[j])
+            
+            cluster_centers, clusterAssignments = ml_k_means(X, K[j] ,medoids)
+            print classifyUnlabeledData(clusterAssignments, labeled[k])
+    #plot_2D_clusters(X, clusterAssignments, cluster_centers);
+    # index = computeDunnIndex(cluster_centers, clusterAssignments, X)
+    # print "Dunn index = " + str(index)
+    # purity = computeClusterPurity(clusterAssignments)
+    # print "purity " + str(purity)
 
 # M = [10, 50, 400]
 # K = [2, 5, 10]

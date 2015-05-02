@@ -60,6 +60,7 @@ def extract_dictionary(texts):
 
     words = [line.strip() for line in open('words.txt')]
     stopwords = [line.strip() for line in open('Stopwords.txt')]
+    SAT_words = [line.strip() for line in open('SAT_words.txt')]
 
     unigrams = []
     bigrams  = []
@@ -81,7 +82,7 @@ def extract_dictionary(texts):
             if(word not in words):
                 mispellings = mispellings + 1
 
-            if(word not in unigrams):
+            if(word not in unigrams): #and word not in stopwords):
                 unigrams.append(word)
 
             if(i > 0):
